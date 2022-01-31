@@ -1,34 +1,72 @@
 import "./App.css";
+import React, { useState, useEffect } from "react";
+import { getWeatherData } from "./Components/WeatherApi";
 
 function App() {
+  const [weatherdata, setWeatherData] = useState(null);
+  const [city, setCity] = useState("iran");
+
+  const getData = async () => {
+    try {
+      const data = await getWeatherData(city);
+      setWeatherData(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <div className="App">
       <div className="card">
         <h2 className="title">
-          <i className="fa fa-cloud"></i>Weather App
+          <i className="fa fa-cloud"></i>Weather-App
         </h2>
         <div className="search-form">
-          <input type="text" placeholder="Enter Your City Name" />
-          <button className="search">search</button>
+          <input
+            type="text"
+            placeholder="Enter Your City Name"
+            onChange={(e) => setCity(e.target.value)}
+          />
+          <button className="search" onClick={() => getData()}>
+            search
+          </button>
         </div>
-        <div className="main-container">
-          <h4>Live Weather Condition </h4>
-          <div className="weather-icon">
-            <i className="fa fa-sun"></i>
+        {weatherdata !== null ? (
+          <div className="main-container">
+            <h4>Live Weather Condition </h4>
+            <div className="weather-icon">
+              <img
+                src={`http://openweathermap.org/img/wn/${weatherdata.weather[0].icon}.png`}
+                alt=""
+              />
+            </div>
+            <h3>{weatherdata.weather[0].main}</h3>
+            <div className="temprature">
+              <h1>
+                {parseFloat(weatherdata.main.temp - 273.15).toFixed(1)}&deg;C
+              </h1>
+            </div>
+            <div className="location">
+              <h3>
+                <i className="fa fa-street-view"></i>
+                {weatherdata.name} | {weatherdata.sys.country}
+              </h3>
+            </div>
+            <div className="temprature-range">
+              <h5>
+                {" "}
+                Min:{parseFloat(weatherdata.main.temp_min - 273.15).toFixed(1)}
+                &deg;C || Max:
+                {parseFloat(weatherdata.main.temp_max - 273.15).toFixed(1)}
+                &deg;C || Humidity:
+                {parseFloat(weatherdata.main.humidity).toFixed(1)}%
+              </h5>
+            </div>
           </div>
-          <h3>Sunny</h3>
-          <div className="temprature">
-            <h1>25&deg;C</h1>
-          </div>
-          <div className="location">
-            <h3>
-              <i className="fa fa-street-view"></i>United States | NewYork{" "}
-            </h3>
-          </div>
-          <div className="temprature-range">
-            <h6>Min:25&deg;C || Max:28&deg;C || Humidity:10%</h6>
-          </div>
-        </div>
+        ) : null}
       </div>
     </div>
   );

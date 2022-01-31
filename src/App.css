@@ -11,7 +11,7 @@ body {
     width: 70%;
     height: 70%;
     margin: 1% auto 10px;
-    background-image: linear-gradient( 109.6deg, rgba(232, 252, 252, 1) 11.2%, rgba(252, 215, 134, 1) 56.2%, rgba(247, 124, 124, 1) 100.2%);
+    background-image: linear-gradient( 99deg, rgba(115, 18, 81, 1) 10.6%, rgba(28, 28, 28, 1) 118%);
 }
 
 .title {
@@ -68,9 +68,9 @@ body {
     font-weight: 700;
 }
 
-.weather-icon {
-    font-size: 30px;
-    font-weight: 900;
+.weather-icon img {
+    width: 100px;
+    height: 100px;
     animation: iconanimation 3s infinite;
 }
 
@@ -122,4 +122,8 @@ body {
     100% {
         transform: rotateY(360deg);
     }
+}
+
+.temprature-range h5 {
+    padding: 10px;
 }
